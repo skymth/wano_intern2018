@@ -1,0 +1,37 @@
+version: '3.3'
+
+
+services:
+  api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    networks:
+      - database
+    #TODO: 任意のポートを以下に設定
+    ports:
+      - "????:????"
+
+  mysql:
+    image: 'mysql:5.7.22'
+    ports:
+      - "3306:3306"
+    #TODO: 任意の環境変数を以下に設定
+    environment:
+      MYSQL_USER: ?
+      MYSQL_PASSWORD: ?
+      MYSQL_DATABASE: ?
+      MYSQL_ROOT_PASSWORD: ?
+    networks:
+      - database
+    volumes:
+      - db-data:/var/lib/mysql
+
+    #TODO: 機械学習環境、フロント環境を追加
+
+
+volumes:
+  db-data:
+
+networks:
+  database
