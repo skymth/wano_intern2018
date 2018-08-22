@@ -1,0 +1,41 @@
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/jquery"></script>    
+
+<div id="app">
+    <input @change="selectedFile" type="file" name="file">
+    <button @click="upload" type="submit">upload</button>
+</div>
+<script>
+(function(){
+    new Vue({
+        el: '#app',
+        data: {
+            uploadFile: null
+        },
+        methods: {
+            selectedFile: function(e) {
+                e.preventDefault();
+                let files = e.target.files;
+                this.uploadFile = files[0];
+            },
+            upload: function() {
+                let formData = new FormData();
+                formData.append('fileName', 'jrk.png');
+                formData.append('Content-Type', 'application/json');
+                formData.append('contentType', 'application/json');
+                formData.append('contentData', this.uploadFile);
+                axios
+                    .post('http://127.0.0.1:3000/data/json/upload', formData)
+                    .then(function(response) {
+                    })
+                    .catch(function(error) {
+                    })
+            }
+        }
+    });
+})();
+//http://0.0.0.0:3000/data/json/upload
+//http://localhost:3000/data/json/upload
+</script>
