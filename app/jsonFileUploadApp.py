@@ -7,22 +7,18 @@ import base64
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
-MAX_JSON_CONTENT_LENGTH = 10
-UPLOAD_DIR = os.getenv('./')
+MAX_JSON_CONTENT_LENGTH = 10000000
+UPLOAD_DIR = './'
 
 @app.route('/data/json/upload', methods=['POST'])
 def upload_rest_json():
-    print(request.headers)
-    print(request.data)
-    jsonData = request.json
-    print(format(jsonData))
-    jsonData = request.get_json(force=True)
-    print(jsonData['flask_id'])
-    fileName = jsonData.get("fileName")
-    contentType = jsonData.get("content-Type")
-    contentDataAscii = jsonData.get("contentData")
+    print(request.form['fileName'])
+    print(request.form['contentType'])
+    print(request.form['contentData'])
+    fileName = request.form["fileName"]
+    contentDataAscii = request.form["contentData"]
 
     contentData = base64.b64decode(contentDataAscii)
 
@@ -46,4 +42,4 @@ def handle_over_max_file_size(error):
 # main
 if __name__ == "__main__":
     print(app.url_map)
-    app.run(host='127.0.0.1', port=3000)
+    app.run(host='localhost', port=3000)

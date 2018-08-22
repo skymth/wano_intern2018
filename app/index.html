@@ -2,40 +2,45 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/vue"></script>
 <script src="https://unpkg.com/jquery"></script>    
+<script src="base64.js"></script>
 
-<div id="app">
-    <input @change="selectedFile" type="file" name="file">
+<div id="app"> <input @change="selectedFile" type="file" name="file">
     <button @click="upload" type="submit">upload</button>
 </div>
 <script>
-(function(){
-    new Vue({
-        el: '#app',
-        data: {
-            uploadFile: null
-        },
-        methods: {
-            selectedFile: function(e) {
-                e.preventDefault();
-                let files = e.target.files;
-                this.uploadFile = files[0];
+    (function(){
+        new Vue({
+            el: '#app',
+            data: {
+                uploadFile: null
             },
-            upload: function() {
-                let formData = new FormData();
-                formData.append('fileName', 'jrk.png');
-                formData.append('Content-Type', 'application/json');
-                formData.append('contentType', 'application/json');
-                formData.append('contentData', this.uploadFile);
-                axios
-                    .post('http://127.0.0.1:3000/data/json/upload', formData)
-                    .then(function(response) {
-                    })
-                    .catch(function(error) {
-                    })
+            methods: {
+                selectedFile: function(e) {
+                    e.preventDefault();
+                    let files = e.target.files;
+                    this.uploadFile = files[0];
+                    this.formData = new FormData();
+                    this.reader = new FileReader();
+                    this.reader.onload = function() {
+                       this.result = e.target.result
+                    };
+                    this.reader.readAsBinaryString(this.uploadFile);
+                },
+                upload: function() {
+                    this.formData.append('fileName', this.uploadFile.name);
+                    this.formData.append('contentType', 'application/json');
+                    this.formData.append('contentData', base64.encode(this.reader.result));
+
+                    axios
+                        .post('http://localhost:3000/data/json/upload', this.formData)
+                        .then(function(response) {
+                        })
+                        .catch(function(error) {
+                        })
+                }
             }
-        }
-    });
-})();
+        });
+    })();
 //http://0.0.0.0:3000/data/json/upload
 //http://localhost:3000/data/json/upload
 </script>
