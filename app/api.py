@@ -92,4 +92,4 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 if __name__ == '__main__':
-    api.run(host='0.0.0.0', port=3000)
+    api.run(host='127.0.0.1', port=3000)
