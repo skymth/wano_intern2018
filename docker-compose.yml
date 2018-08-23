@@ -2,42 +2,10 @@ version: '3.3'
 
 
 services:
-  web:
-    build:
-      context: ./web
-      dockerfile: Dockerfile
-
-    ports:
-      - "8080:8080"
-    networks:
-      - database
-    links:
-      - mysql
-      - api
-    volumes:
-      - $PWD:/root
-    tty: true
-
-  api:
-    build:
-      context: ./DockerV
-      dockerfile: Dockerfile
-
-    ports:
-      - "3000:3000"
-    networks:
-      - database
-    links:
-      - mysql
-    volumes:
-      - $PWD/:/root
-    tty: True
-
   mysql:
     image: 'mysql:5.7.22'
     ports:
       - "3306:3306"
-    hostname: mysql
     environment:
       MYSQL_USER: skymth_user
       MYSQL_PASSWORD: skymth_pass
@@ -49,7 +17,28 @@ services:
       - "./mysql/conf:/docker-entrypoint-initdb.d"
       - db-data:/var/lib/mysql
 
-    #TODO: 機械学習環境、フロント環境を追加
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - apiserver
+    volumes:
+      - .:/app/frontend
+      - /app/frontend/node_modules
+
+  api:
+    build:
+      context: ./DockerV
+      dockerfile: Dockerfile
+
+    ports:
+      - "3000:3000"
+    networks:
+      - database
+      - apiserver
 
 
 volumes:
@@ -57,3 +46,5 @@ volumes:
 
 networks:
   database:
+  apiserver:
+

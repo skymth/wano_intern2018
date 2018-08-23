@@ -31,7 +31,7 @@ df['jpy_total_price'] = [df['jpy_unit_price'][i]*df['total_quantity'][i] for i i
 
 table_name = "wano_intern"
 db_settings = {
-    "host": 'mysql',
+    "host": 'localhost',
     "database": 'skymth_db',
     "user": 'skymth_user',
     "password": 'skymth_pass',
