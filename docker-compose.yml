@@ -2,20 +2,26 @@ version: '3.3'
 
 
 services:
-#  api:
-#    build:
-#      context: ./app
-#      dockerfile: Dockerfile
-#    networks:
-#      - database
-#    #TODO: 任意のポートを以下に設定
-#    ports:
-#      - "????:????"
+  api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+
+    ports:
+      - "5000:3000"
+    networks:
+      - database
+    links:
+      - mysql
+    volumes:
+      - $PWD:/usr/src/app
+    tty: true
 
   mysql:
     image: 'mysql:5.7.22'
     ports:
       - "3306:3306"
+    hostname: mysql
     environment:
       MYSQL_USER: skymth_user
       MYSQL_PASSWORD: skymth_pass

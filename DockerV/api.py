@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, abort, make_response
 from peewee import *
 
-database = MySQLDatabase('skymth_db', **{'charset': 'utf8', 'use_unicode': True, 'host': '127.0.0.1', 'port': 3306, 'user': 'skymth_user', 'password': 'skymth_pass'})
+database = MySQLDatabase('skymth_db', **{'charset': 'utf8', 'use_unicode': True, 'host': 'mysql', 'port': 3306, 'user': 'skymth_user', 'password': 'skymth_pass'})
+#database = MySQLDatabase('skymth_db', **{'charset': 'utf8', 'use_unicode': True, 'host': 'mysql', 'port': 3306, 'user': 'skymth_user', 'password': 'skymth_pass'})
 
 class UnknownField(object):
     def __init__(self, *_, **__): pass
