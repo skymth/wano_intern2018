@@ -73,19 +73,17 @@ def get_Artist(artist_id):
     sum = 0
     for wanointern in query:
         artist = wanointern.artist
-        print(wanointern.jpy_total_price)
         sum += float(wanointern.jpy_total_price)
 
     result = {
         "result":True,
         "data":{
             'artist_id' : wanointern.artist,
-            'artist_total_price' : sum,
+            'total_sales' : sum,
             }
         }
 
     return make_response(jsonify(result))
-
 
 @api.errorhandler(404)
 def not_found(error):
