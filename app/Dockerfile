@@ -12,6 +12,6 @@ RUN wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz \
 ENV PYTHONIOENCODING "utf-8"
 RUN apt-get install -y python3-pip python-qt4
 
-RUN apt-get install build-essential libssl-dev libffi-dev python-dev
+RUN apt-get update && apt-get install -y build-essential libssl-dev libffi-dev python-dev
 RUN pip3 install flask peewee pandas datetime timedelta sqlalchemy pymysql
 
