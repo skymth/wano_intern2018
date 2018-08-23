@@ -1,0 +1,36 @@
+.artist {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+.profile {
+  display: flex;
+  justify-content: space-around;
+}
+
+h1 {
+  position: relative;
+  padding: 0 .4em .1em;
+}
+h1::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  content: '';
+  width: 100%;
+  height: 10px;
+  background-color: #b6f0fc;
+}
+
+.dots {
+  border-width: 3 0 8px;
+  border-style: solid;
+  border-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 1"><circle fill="hsla(0, 0%, 65%, 1.0)" cx="1" cy="0.5" r="0.5"/></svg>') 0 0 100% repeat;
+  width: 216px;
+  margin-top: 3%;
+}
