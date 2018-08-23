@@ -2,16 +2,6 @@ version: '3.3'
 
 
 services:
-#  api:
-#    build:
-#      context: ./app
-#      dockerfile: Dockerfile
-#    networks:
-#      - database
-#    #TODO: 任意のポートを以下に設定
-#    ports:
-#      - "????:????"
-
   mysql:
     image: 'mysql:5.7.22'
     ports:
@@ -27,7 +17,28 @@ services:
       - "./mysql/conf:/docker-entrypoint-initdb.d"
       - db-data:/var/lib/mysql
 
-    #TODO: 機械学習環境、フロント環境を追加
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - apiserver
+    volumes:
+      - .:/app/frontend
+      - /app/frontend/node_modules
+
+  api:
+    build:
+      context: ./DockerV
+      dockerfile: Dockerfile
+
+    ports:
+      - "3000:3000"
+    networks:
+      - database
+      - apiserver
 
 
 volumes:
@@ -35,3 +46,5 @@ volumes:
 
 networks:
   database:
+  apiserver:
+

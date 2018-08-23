@@ -11,7 +11,13 @@ RUN wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz \
         && make altinstall
 ENV PYTHONIOENCODING "utf-8"
 RUN apt-get install -y python3-pip python-qt4
-
+RUN apt-get install -y  vim curl
 RUN apt-get update && apt-get install -y build-essential libssl-dev libffi-dev python-dev
 RUN pip3 install flask peewee pandas datetime timedelta sqlalchemy pymysql
 
+COPY . .
+
+EXPOSE 3000
+# サーバ起動
+CMD ["python3", "initDB.py"]
+CMD ["python3", "api.py"]

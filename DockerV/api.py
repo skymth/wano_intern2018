@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, abort, make_response
 from peewee import *
 
-database = MySQLDatabase('skymth_db', **{'charset': 'utf8', 'use_unicode': True, 'host': '127.0.0.1', 'port': 3306, 'user': 'skymth_user', 'password': 'skymth_pass'})
+database = MySQLDatabase('skymth_db', **{'charset': 'utf8', 'use_unicode': True, 'host': 'mysql', 'port': 3306, 'user': 'skymth_user', 'password': 'skymth_pass'})
+#database = MySQLDatabase('skymth_db', **{'charset': 'utf8', 'use_unicode': True, 'host': 'mysql', 'port': 3306, 'user': 'skymth_user', 'password': 'skymth_pass'})
 
 class UnknownField(object):
     def __init__(self, *_, **__): pass
@@ -133,4 +134,4 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 if __name__ == '__main__':
-    api.run(host='localhost', port=3000)
+    api.run(host='0.0.0.0', port=3000)
