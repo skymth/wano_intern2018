@@ -2,20 +2,36 @@ version: '3.3'
 
 
 services:
-  api:
+  web:
     build:
-      context: ./app
+      context: ./web
       dockerfile: Dockerfile
 
     ports:
-      - "5000:3000"
+      - "8080:8080"
+    networks:
+      - database
+    links:
+      - mysql
+      - api
+    volumes:
+      - $PWD:/root
+    tty: true
+
+  api:
+    build:
+      context: ./DockerV
+      dockerfile: Dockerfile
+
+    ports:
+      - "3000:3000"
     networks:
       - database
     links:
       - mysql
     volumes:
-      - $PWD:/usr/src/app
-    tty: true
+      - $PWD/:/root
+    tty: True
 
   mysql:
     image: 'mysql:5.7.22'
