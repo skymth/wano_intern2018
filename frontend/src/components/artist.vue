@@ -3,14 +3,14 @@
     <div class="profile">
       <img :src="image_src">
       <h1 id="name">
-        {{ name }}
+        {{ info.data.data.artist_id }}
       </h1>
     </div>
 
     <hr class="dots">
 
     <div class="list-data">
-      <h2> data だす </h2>
+        <h2> Total sales: {{ info.data.data.total_sales }} JPY </h2>
     </div>
 
     <hr class="dots">
@@ -38,8 +38,14 @@ export default {
     return {
       image_src: require('../assets/noimage.png'),
       name: 'Artist name',
+      info: null,
       uploadFile: null
     }
+  },
+  mounted () {
+    axios
+      .get('http://localhost:3000/getArtist/400')
+      .then(response => (this.info = response))
   },
   components: {
     DoughnutGraph
