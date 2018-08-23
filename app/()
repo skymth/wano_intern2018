@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+from flask import Flask, jsonify, abort, make_response
+import peewee
+import pandas
+
+db = MySQLDatabase(
+        database='skymth_db',
+        user='skymth_user',
+        password='skymth_pass',
+        host='127.0.0.1',
+        port=3306)
+
+class Model(Model):
+    class Meta:
+        database = db
+
+class Daily(BaseModel):
+    'id' 
+    'create_time' 
+    'update_time' 
+    'report_date' 
+    'store_id' 
+    'country_id' 
+    'artist_id' 
+    'release_id' : [0 for i in range(num)],
+    'song_id' : [0 for i in range(num)],
+    'distribution_type' : [random.randint(0,1) for i in range(num)],
+    'total_quantity' : [random.randint(1,10) for i in range(num)],
+    'jpy_unit_price' : [0.0 for i in range(num)],
+    'jpy_total_price' : [0.0 for i in range(num)],

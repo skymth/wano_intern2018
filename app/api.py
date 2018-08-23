@@ -73,23 +73,64 @@ def get_Artist(artist_id):
     sum = 0
     for wanointern in query:
         artist = wanointern.artist
-        print(wanointern.jpy_total_price)
         sum += float(wanointern.jpy_total_price)
 
     result = {
         "result":True,
         "data":{
             'artist_id' : wanointern.artist,
-            'artist_total_price' : sum,
+            'total_sales' : sum,
             }
         }
 
     return make_response(jsonify(result))
 
+@api.route('/getArtist/country/<string:artist_id>', methods=['GET'])
+def get_country(artist_id):
+    try:
+        query = WanoIntern.select().where(WanoIntern.artist ==artist_id)
+    except WanoIntern.DoesNotExist:
+        abort(404)
+
+    country_li = {0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0}
+    for wanointern in query:
+        artist = wanointern.artist
+        if wanointern.country == 0:
+            country_li[wanointern.country] += float(wanointern.jpy_total_price)
+        elif wanointern.country == 1:
+            country_li[wanointern.country] += float(wanointern.jpy_total_price)
+
+        elif wanointern.country == 2:
+            country_li[wanointern.country] += float(wanointern.jpy_total_price)
+
+        elif wanointern.country == 3:
+            country_li[wanointern.country] += float(wanointern.jpy_total_price)
+
+        elif wanointern.country == 4:
+            country_li[wanointern.country] += float(wanointern.jpy_total_price)
+
+        elif wanointern.country == 5:
+            country_li[wanointern.country] += float(wanointern.jpy_total_price)
+
+
+    result = {
+        "result":True,
+        "data":{
+            'artist_id' : wanointern.artist,
+            'US' : country_li[0],
+            'UK' : country_li[1],
+            'JP' : country_li[2],
+            'CN' : country_li[3],
+            'RU' : country_li[4],
+            'UGANDA' : country_li[5]
+            }
+        }
+
+    return make_response(jsonify(result))
 
 @api.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 if __name__ == '__main__':
-    api.run(host='0.0.0.0', port=3000)
+    api.run(host='127.0.0.1', port=3000)
