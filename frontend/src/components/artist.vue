@@ -1,5 +1,9 @@
 <template>
   <div class="artist">
+  <div v-show="loading">
+  <img :src="image_src2"></div>
+  <div v-show="!loading">
+
     <div class="profile">
       <img :src="image_src">
       <h1 id="name">
@@ -26,6 +30,7 @@
       <button @click="upload" type="submit">upload</button>
     </div>
 
+  </div>
   </div>
 </template>
 
@@ -56,10 +61,12 @@ export default {
   data () {
     return {
       image_src: require('../assets/noimage.png'),
+      image_src2: require('../assets/loading.gif'),
       name: 'Artist name',
       info: null,
       country: null,
-      uploadFile: null
+      uploadFile: null,
+      loading: true
     }
   },
   mounted () {
@@ -70,6 +77,10 @@ export default {
     axios
       .get('http://localhost:3000/getArtist/country/' + this.$route.params.id)
       .then(response => (this.country = response))
+
+    setTimeout(() => {
+      this.loading = false;
+    }, 4000);
   },
   components: {
     DoughnutGraph
