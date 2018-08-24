@@ -11,6 +11,7 @@
 
     <div class="list-data">
         <h2> Total sales: {{ info.data.data.total_sales }} JPY </h2>
+        <h2> Total music: {{ info.data.data.total_music }} songs </h2>
     </div>
 
     <hr class="dots">
@@ -51,6 +52,7 @@ var DoughnutGraph = {
 }
 
 export default {
+  props: ['id'],
   data () {
     return {
       image_src: require('../assets/noimage.png'),
@@ -62,11 +64,11 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:3000/getArtist/400')
+      .get('http://localhost:3000/getArtist/' + this.$route.params.id)
       .then(response => (this.info = response))
 
     axios
-      .get('http://localhost:3000/getArtist/country/400')
+      .get('http://localhost:3000/getArtist/country/' + this.$route.params.id)
       .then(response => (this.country = response))
   },
   components: {
