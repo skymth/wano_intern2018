@@ -13,7 +13,7 @@ ENV PYTHONIOENCODING "utf-8"
 RUN apt-get install -y python3-pip python-qt4
 RUN apt-get install -y  vim curl
 RUN apt-get update && apt-get install -y build-essential libssl-dev libffi-dev python-dev
-RUN pip3 install flask peewee pandas datetime timedelta sqlalchemy pymysql
+RUN pip3 install flask peewee pandas datetime timedelta sqlalchemy pymysql flask_cors werkzeug pybase64
 
 COPY . .
 
@@ -21,3 +21,4 @@ EXPOSE 3000
 # サーバ起動
 CMD ["python3", "initDB.py"]
 CMD ["python3", "api.py"]
+

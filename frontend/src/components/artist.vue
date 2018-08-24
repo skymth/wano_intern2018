@@ -3,20 +3,21 @@
     <div class="profile">
       <img :src="image_src">
       <h1 id="name">
-        {{ name }}
+        {{ info.data.data.artist_id }}
       </h1>
     </div>
 
     <hr class="dots">
 
     <div class="list-data">
-      <h2> data だす </h2>
+        <h2> Total sales: {{ info.data.data.total_sales }} JPY </h2>
+        <h2> Total music: {{ info.data.data.total_music }} songs </h2>
     </div>
 
     <hr class="dots">
 
     <div class="graph">
-      <DoughnutGraph :width="900" :height="300"></DoughnutGraph>
+      <DoughnutGraph :country='country' :width="900" :height="300"></DoughnutGraph>
     </div>
 
     <hr class="dots">
@@ -30,16 +31,45 @@
 
 <script>
 import '@/assets/css/artist.css'
-import DoughnutGraph from '../components/DoughnutGraph.vue'
+import { Doughnut } from 'vue-chartjs'
+// import DoughnutGraph from '../components/DoughnutGraph.vue'
 const axios = require('axios')
 
+var DoughnutGraph = {
+  extends: Doughnut,
+  props: ['country'],
+  mounted () {
+    console.log(this.country)
+    this.renderChart({
+      labels: ['US', 'UK', 'RU', 'CN', 'JP', 'UGANDA'],
+      datasets: [{
+        label: 'country total sales',
+        data: [this.country.data.data.US, this.country.data.data.UK, this.country.data.data.RU, this.country.data.data.CN, this.country.data.data.JP, this.country.data.data.UGANDA],
+        backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16', '#eddc44']
+      }]
+    })
+  }
+}
+
 export default {
+  props: ['id'],
   data () {
     return {
       image_src: require('../assets/noimage.png'),
       name: 'Artist name',
+      info: null,
+      country: null,
       uploadFile: null
     }
+  },
+  mounted () {
+    axios
+      .get('http://localhost:3000/getArtist/' + this.$route.params.id)
+      .then(response => (this.info = response))
+
+    axios
+      .get('http://localhost:3000/getArtist/country/' + this.$route.params.id)
+      .then(response => (this.country = response))
   },
   components: {
     DoughnutGraph
