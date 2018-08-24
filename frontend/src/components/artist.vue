@@ -23,16 +23,18 @@
     <hr class="dots">
 
     <div id="uploadmusic"> <input @change="selectedFile" type="file" name="file">
-      <button @click="upload" type="submit">upload</button>
+            <button @click="upload" type="submit">upload</button>
     </div>
 
+    <vue-dropzone id="drop1" :options="dropOptions"></vue-dropzone>
+
     <div class="classif">
-        <h2> {{ result.data.result }} </h2>
     </div>
   </div>
 </template>
 
 <script>
+import vueDropzone from 'vue2-dropzone'
 import '@/assets/css/artist.css'
 import { Doughnut } from 'vue-chartjs'
 // import DoughnutGraph from '../components/DoughnutGraph.vue'
@@ -63,9 +65,13 @@ export default {
       info: null,
       country: null,
       result: null,
-      uploadFile: null
+      uploadFile: null,
+      dropOptions: {
+        url: 'https://httpbin.org/post'
+      }
     }
   },
+
   mounted () {
     axios
       .get('http://localhost:3000/getArtist/' + this.$route.params.id)
@@ -75,8 +81,10 @@ export default {
       .get('http://localhost:3000/getArtist/country/' + this.$route.params.id)
       .then(response => (this.country = response))
   },
+
   components: {
-    DoughnutGraph
+    DoughnutGraph,
+    vueDropzone
   },
   methods: {
     selectedFile (e) {
