@@ -6,6 +6,9 @@ import werkzeug
 import base64
 from datetime import datetime
 
+from machinelearning import GenreRecognition
+# from machinelearning import save_file_sys
+
 database = MySQLDatabase('skymth_db', **{'charset': 'utf8', 'use_unicode': True, 'host': 'mysql', 'port': 3306, 'user': 'skymth_user', 'password': 'skymth_pass'})
 #database = MySQLDatabase('skymth_db', **{'charset': 'utf8', 'use_unicode': True, 'host': 'mysql', 'port': 3306, 'user': 'skymth_user', 'password': 'skymth_pass'})
 
@@ -146,6 +149,7 @@ MAX_JSON_CONTENT_LENGTH = 10000000
 UPLOAD_DIR = './'
 @api.route('/data/json/upload', methods=['POST'])
 def upload_rest_json():
+
     print(request.form['fileName'])
     print(request.form['contentType'])
     print(request.form['contentData'])
@@ -164,7 +168,13 @@ def upload_rest_json():
         + werkzeug.utils.secure_filename(fileName)
     with open(os.path.join(UPLOAD_DIR, saveFileName), 'wb') as saveFile:
         saveFile.write(contentData)
-    return make_response(jsonify({'result':'upload json OK.'}))
+
+        # save_file_sys.save_file(saveFile)
+        eval = GenreRecognition.evalu(saveFile)
+
+
+
+    return make_response(jsonify({'result':eval}))
 
 @api.errorhandler(werkzeug.exceptions.RequestEntityTooLarge)
 def handle_over_max_file_size(error):

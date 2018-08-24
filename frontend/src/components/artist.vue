@@ -23,13 +23,20 @@
     <hr class="dots">
 
     <div id="uploadmusic"> <input @change="selectedFile" type="file" name="file">
-      <button @click="upload" type="submit">upload</button>
+            <button @click="upload" type="submit">upload</button>
     </div>
 
+    <div id="uploadmusic"> <input @change="selectedFile" type="file" name="file">
+    <vue-dropzone id="drop1" :options="dropOptions"></vue-dropzone>
+
+    <div class="classif">
+        <h2> {{ result.data.result }} </h2>
+    </div>
   </div>
 </template>
 
 <script>
+import vueDropzone from 'vue2-dropzone'
 import '@/assets/css/artist.css'
 import { Doughnut } from 'vue-chartjs'
 // import DoughnutGraph from '../components/DoughnutGraph.vue'
@@ -59,9 +66,14 @@ export default {
       name: 'Artist name',
       info: null,
       country: null,
-      uploadFile: null
+      result: {data: {result: 'Please upload file'}},
+      uploadFile: null,
+      dropOptions: {
+        url: 'https://httpbin.org/post'
+      }
     }
   },
+
   mounted () {
     axios
       .get('http://localhost:3000/getArtist/' + this.$route.params.id)
@@ -71,8 +83,10 @@ export default {
       .get('http://localhost:3000/getArtist/country/' + this.$route.params.id)
       .then(response => (this.country = response))
   },
+
   components: {
-    DoughnutGraph
+    DoughnutGraph,
+    vueDropzone
   },
   methods: {
     selectedFile (e) {
@@ -93,6 +107,7 @@ export default {
       axios.post('http://localhost:3000/data/json/upload', this.formData
       ).then((res) => {
         console.log(res)
+        this.result = res
         // TODO: ここでresponseデータをあれこれする
       }).catch(error => {
         console.log(error)
