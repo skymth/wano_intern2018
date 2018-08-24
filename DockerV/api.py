@@ -80,7 +80,8 @@ def get_Artist(artist_id):
     except WanoIntern.DoesNotExist:
         abort(404)
 
-    sum = 0
+    sales_sum = 0.0
+    music_sum = 0.0
     for wanointern in query:
         artist = wanointern.artist
         sales_sum += float(wanointern.jpy_total_price)
