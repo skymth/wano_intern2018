@@ -12,8 +12,9 @@ def evalu(saveFile):
 
     from extract_features_file import extract_features
 
-    # path = librosa.util.find_files(config.Test.TEST_DATA_PATH)
-    path = librosa.util.find_files(saveFile)
+
+    path = librosa.util.find_files(config.Test.TEST_DATA_PATH)
+    #path = librosa.util.find_files(saveFile)
     sample_rate = config.CreateDataset.SAMPLING_RATE
     hop_size = config.CreateDataset.HOP_SIZE
     frame_size = config.CreateDataset.FRAME_SIZE
@@ -110,9 +111,9 @@ def evalu(saveFile):
 #     ]
 #
 #
-if __name__ == '__main__':
+#if __name__ == '__main__':
 #     from save_file_sys import save_file
 #     save_file()
 
-    genre = evalu()
-    print(genre)
+ #   genre = evalu()
+#     print(genre)

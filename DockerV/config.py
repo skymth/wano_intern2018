@@ -24,8 +24,6 @@ class CreateDataset:
     HOP_SIZE = 512
 
 
-# class Test:
-#     # Path for test data
-#     TEST_DATA_PATH = "./TestFiles/"
-#
-#
+class Test:
+     # Path for test data
+    TEST_DATA_PATH = "./TestFiles/"
