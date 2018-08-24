@@ -1,5 +1,10 @@
-from flask import Flask, jsonify, abort, make_response
+from flask import Flask, jsonify, abort, make_response, request
 from peewee import *
+from flask_cors import CORS
+import os
+import werkzeug
+import base64
+from datetime import datetime
 
 database = MySQLDatabase('skymth_db', **{'charset': 'utf8', 'use_unicode': True, 'host': 'mysql', 'port': 3306, 'user': 'skymth_user', 'password': 'skymth_pass'})
 #database = MySQLDatabase('skymth_db', **{'charset': 'utf8', 'use_unicode': True, 'host': 'mysql', 'port': 3306, 'user': 'skymth_user', 'password': 'skymth_pass'})
@@ -35,6 +40,7 @@ class WanoIntern(BaseModel):
 
 
 api = Flask(__name__)
+CORS(api, resources={r"/*": {"origins": "*"}})
 
 @api.route('/getWanoIntern/<string:id>', methods=['GET'])
 def get_user(id):
@@ -71,16 +77,19 @@ def get_Artist(artist_id):
     except WanoIntern.DoesNotExist:
         abort(404)
 
-    sum = 0
+    sales_sum = 0.0
+    music_sum = 0.0
     for wanointern in query:
         artist = wanointern.artist
-        sum += float(wanointern.jpy_total_price)
+        sales_sum += float(wanointern.jpy_total_price)
+        music_sum += float(wanointern.total_quantity)
 
     result = {
         "result":True,
         "data":{
             'artist_id' : wanointern.artist,
-            'total_sales' : sum,
+            'total_sales' : sales_sum,
+            'total_music' : music_sum,
             }
         }
 
@@ -132,6 +141,35 @@ def get_country(artist_id):
 @api.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
+
+MAX_JSON_CONTENT_LENGTH = 10000000
+UPLOAD_DIR = './'
+@api.route('/data/json/upload', methods=['POST'])
+def upload_rest_json():
+    print(request.form['fileName'])
+    print(request.form['contentType'])
+    print(request.form['contentData'])
+    fileName = request.form["fileName"]
+    contentDataAscii = request.form["contentData"]
+
+    contentData = base64.b64decode(contentDataAscii)
+
+    contentDataSize = len(contentData)
+    if MAX_JSON_CONTENT_LENGTH > 0:
+        if MAX_JSON_CONTENT_LENGTH < contentDataSize:
+            raise werkzeug.exceptions.RequestEntityTooLarge( \
+                "json content length over : {0}".format(contentDataSize))
+
+    saveFileName = datetime.now().strftime("%Y%m%d_%H%M%S_") \
+        + werkzeug.utils.secure_filename(fileName)
+    with open(os.path.join(UPLOAD_DIR, saveFileName), 'wb') as saveFile:
+        saveFile.write(contentData)
+    return make_response(jsonify({'result':'upload json OK.'}))
+
+@api.errorhandler(werkzeug.exceptions.RequestEntityTooLarge)
+def handle_over_max_file_size(error):
+    print("werkzeug.exceptions.RequestEntityTooLarge")
+    return 'result : file size is overed.'
 
 if __name__ == '__main__':
     api.run(host='0.0.0.0', port=3000)

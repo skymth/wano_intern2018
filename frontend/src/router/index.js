@@ -13,7 +13,7 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path: '/artist',
+      path: '/artist/:id',
       name: 'Artist',
       component: Artist
     }
