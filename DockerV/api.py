@@ -80,13 +80,15 @@ def get_Artist(artist_id):
     sum = 0
     for wanointern in query:
         artist = wanointern.artist
-        sum += float(wanointern.jpy_total_price)
+        sales_sum += float(wanointern.jpy_total_price)
+        music_sum += float(wanointern.total_quantity)
 
     result = {
         "result":True,
         "data":{
             'artist_id' : wanointern.artist,
-            'total_sales' : sum,
+            'total_sales' : sales_sum,
+            'total_music' : music_sum,
             }
         }
 
