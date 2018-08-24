@@ -26,6 +26,9 @@
       <button @click="upload" type="submit">upload</button>
     </div>
 
+    <div class="classif">
+        <h2> {{ result.data.result }} </h2>
+    </div>
   </div>
 </template>
 
@@ -59,6 +62,7 @@ export default {
       name: 'Artist name',
       info: null,
       country: null,
+      result: null,
       uploadFile: null
     }
   },
@@ -93,6 +97,7 @@ export default {
       axios.post('http://localhost:3000/data/json/upload', this.formData
       ).then((res) => {
         console.log(res)
+        this.result = res
         // TODO: ここでresponseデータをあれこれする
       }).catch(error => {
         console.log(error)
