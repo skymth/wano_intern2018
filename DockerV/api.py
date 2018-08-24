@@ -169,7 +169,7 @@ def upload_rest_json():
         saveFile.write(contentData)
 
         # save_file_sys.save_file(saveFile)
-        eval = GenreRecognition.eval(saveFile)
+        eval = GenreRecognition.evalu(saveFile)
 
 
 
