@@ -26,9 +26,11 @@
             <button @click="upload" type="submit">upload</button>
     </div>
 
+    <div id="uploadmusic"> <input @change="selectedFile" type="file" name="file">
     <vue-dropzone id="drop1" :options="dropOptions"></vue-dropzone>
 
     <div class="classif">
+        <h2> {{ result.data.result }} </h2>
     </div>
   </div>
 </template>
@@ -64,7 +66,7 @@ export default {
       name: 'Artist name',
       info: null,
       country: null,
-      result: null,
+      result: {data: {result: 'Please upload file'}},
       uploadFile: null,
       dropOptions: {
         url: 'https://httpbin.org/post'
