@@ -170,11 +170,11 @@ def upload_rest_json():
         saveFile.write(contentData)
 
         # save_file_sys.save_file(saveFile)
-        eval = GenreRecognition.evalu(saveFile)
+        evalu = GenreRecognition.evalu(saveFile)
 
 
 
-    return make_response(jsonify({'result':eval}))
+    return make_response(jsonify({'result':evalu}))
 
 @api.errorhandler(werkzeug.exceptions.RequestEntityTooLarge)
 def handle_over_max_file_size(error):
