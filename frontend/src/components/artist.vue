@@ -15,15 +15,17 @@
     </div>
 
     <hr class="dots">
-
     <div class="graph">
       <DoughnutGraph :country='country' :width="900" :height="300"></DoughnutGraph>
     </div>
-
     <hr class="dots">
 
     <div id="uploadmusic"> <input @change="selectedFile" type="file" name="file">
-      <button @click="upload" type="submit">upload</button>
+            <button @click="upload" type="submit">upload</button>
+    </div>
+
+    <div id="uploadmusic"> <input @change="selectedFile" type="file" name="file">
+        <vue-dropzone id="drop1" :options="dropOptions"></vue-dropzone>
     </div>
 
     <div class="classif">
@@ -33,6 +35,7 @@
 </template>
 
 <script>
+import vueDropzone from 'vue2-dropzone'
 import '@/assets/css/artist.css'
 import { Doughnut } from 'vue-chartjs'
 // import DoughnutGraph from '../components/DoughnutGraph.vue'
@@ -60,12 +63,16 @@ export default {
     return {
       image_src: require('../assets/noimage.png'),
       name: 'Artist name',
-      info: null,
-      country: null,
-      result: null,
-      uploadFile: null
+      info: {data: {data: {artist_id: '404', total_sales: 'Server Error', total_music: 'Server Error'}}},
+      country: {data: {data: {US: 404, UK: 404, CN: 404, RU: 404, JP: 404, UGANDA: 404}}},
+      result: {data: {result: 'Please upload file'}},
+      uploadFile: null,
+      dropOptions: {
+        url: 'https://httpbin.org/post'
+      }
     }
   },
+
   mounted () {
     axios
       .get('http://localhost:3000/getArtist/' + this.$route.params.id)
@@ -75,8 +82,10 @@ export default {
       .get('http://localhost:3000/getArtist/country/' + this.$route.params.id)
       .then(response => (this.country = response))
   },
+
   components: {
-    DoughnutGraph
+    DoughnutGraph,
+    vueDropzone
   },
   methods: {
     selectedFile (e) {
