@@ -27,7 +27,7 @@
     </div>
 
     <div class="classif">
-        <h2> Total music: {{ result }} songs </h2>
+        <h2> Total music: {{ result.data.result }} songs </h2>
     </div>
 
   </div>
